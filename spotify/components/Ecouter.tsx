@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import {Image, Pressable} from 'react-native';
-import AudioRecord from 'react-native-audio-record';
+import { Button, ButtonToolbar } from 'react-bootstrap';
+import {Image, PermissionsAndroid, Pressable} from 'react-native';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
   
+const audioRecord = new AudioRecorderPlayer();
+
 export function Ecouter(): JSX.Element {
 
     const options = {
@@ -11,9 +14,8 @@ export function Ecouter(): JSX.Element {
         audioSource: 6,     // android only (see below)
         wavFile: 'test.wav' // default 'audio.wav'
       };
-    
-    const [inrecord, setInRecord] = useState(false);
-    AudioRecord.init(options);
+
+    const [inRecord, setInRecord] = useState(false);
     
     const LogoStyle = {
         height: 100,
@@ -21,23 +23,31 @@ export function Ecouter(): JSX.Element {
         backgroundColor: '#B4B2B2'
     };
 
-    const record = () => {
-        if (!inrecord) {
-            AudioRecord.start();
-            setInRecord(true);
-        } else {
-            AudioRecord.stop();
-            AudioRecord.on('data', data => {
-                console.log(data);
-            });
-            setInRecord(false);
-        }
+    const startRecord = async () => {
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+        await audioRecord.startRecorder();
+        setInRecord(true);
+    };
+
+    const stopRecord = async () => {
+        const audio = await audioRecord.stopRecorder();
+        audioRecord.removeRecordBackListener();
+        console.log(audio);
+        setInRecord(false);
     };
 
 
     return (
-        <Pressable onPress={record}>
-            <Image style={LogoStyle} source={require('../images/microphone.png')} />
-        </Pressable>
+        <>
+            {inRecord ?
+                <Pressable onPress={stopRecord}>
+                    <Image style={LogoStyle} source={require('../images/microphone_on.png')} />
+                </Pressable> :
+                <Pressable onPress={startRecord}>
+                    <Image style={LogoStyle} source={require('../images/microphone_off.png')} /> 
+                </Pressable>
+            }
+        </>
+        
     );
 }

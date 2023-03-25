@@ -5,17 +5,14 @@
  * @format
  */
 
-import React from 'react';
+import * as React from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
 import { Ecouter } from './components/Ecouter';
+import { Jouer } from './components/Jouer';
 
 export default function App(): JSX.Element {
   const BackgroundStyle = {
@@ -38,13 +35,20 @@ export default function App(): JSX.Element {
   };
   
 
+  const [audio, setAudio] = React.useState("");
+
+  const setAudioData = (data: string) => {
+
+  }
+
   return (
     <SafeAreaView>
       <View style={TitreStyle}>
         <Text style={PoliceStyle}> Spotify </Text>
       </View>
       <View style={BackgroundStyle}>
-        <Ecouter />
+        <Ecouter setAudioData={setAudioData}/>
+        <Jouer/>
       </View>
     </SafeAreaView>
   );

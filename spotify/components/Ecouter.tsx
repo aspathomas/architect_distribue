@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import {Image, Platform, Pressable} from 'react-native';
-import { AudioRecorderPlayer } from 'react-native-audio-recorder-player';
-export function Ecouter(): JSX.Element {
+import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder-player';
+import RNFS from 'react-native-fs';
+
+interface EcouterProps {
+    setAudioData: (event: string) => void;
+}
+
+export function Ecouter(props: EcouterProps): JSX.Element {
+    const { setAudioData } = props;
 
     // const options = {
     //     sampleRate: 16000,  // default 44100
@@ -11,9 +18,10 @@ export function Ecouter(): JSX.Element {
     //     wavFile: 'test.wav' // default 'audio.wav'
     //   };
     
-    const [inRecord, setInRecord] = useState(false);
+    const [inRecord, setInRecord] = React.useState(false);
+    const [audioPath, setAudioPath] = React.useState(0);
     const AudioRecorder = new AudioRecorderPlayer();
-    
+
     const LogoStyle = {
         height: 100,
         width: 100,
@@ -21,19 +29,29 @@ export function Ecouter(): JSX.Element {
     };
     
     const startRecord = async () => {
-        const audioPath = '~/Bureau/Alternance/architect_distribue/spotify/record/hello.mp3';
-        const result = await AudioRecorder.startRecording();
-        AudioRecorder.onFinished = (data : any) => {
-            console.log('Finished recording: ', data);
-        };
-        setInRecord(true);
-        return { audioPath, result };
+        try {
+            const audioPath = "/data/user/0/com.spotify/files/audio.mp3";
+            const result = await AudioRecorder.startRecorder(audioPath);
+            AudioRecorder.addRecordBackListener((e) => {
+                setAudioPath(e.currentPosition);
+            });
+            console.log('record audio...');
+            setInRecord(true);
+        } catch (error) {
+            console.error('Error recording audio:', error);
+        }
     };
 
     const stopRecord = async () => {
-        const result = await AudioRecorder.stopRecording();
-        setInRecord(false);
-        return result;
+        try {
+            const result = await AudioRecorder.stopRecorder();
+            AudioRecorder.removeRecordBackListener();
+            setAudioData(result);
+            console.log(result);
+            setInRecord(false);
+        } catch (error) {
+            console.error('Error stopping recording:', error);
+        }
     }
 
 

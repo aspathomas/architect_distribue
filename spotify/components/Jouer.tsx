@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Image, Platform, Pressable} from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import RNFS from 'react-native-fs';
 
 export function Jouer(): JSX.Element {
 

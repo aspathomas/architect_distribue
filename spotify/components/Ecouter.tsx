@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {Image, Platform, Pressable} from 'react-native';
 import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder-player';
-import RNFS from 'react-native-fs';
+import MicIcon from '@mui/icons-material/Mic';
+import MicNoneIcon from '@mui/icons-material/MicNone';
 
 interface EcouterProps {
     setAudioData: (event: string) => void;
@@ -59,11 +60,11 @@ export function Ecouter(props: EcouterProps): JSX.Element {
         <>
             {inRecord ? (
                 <Pressable onPress={stopRecord}>
-                    <Image style={LogoStyle} source={require('../images/microphone_off.png')} />
+                    <MicIcon/>
                 </Pressable>
             ) : (
                 <Pressable onPress={startRecord}>
-                    <Image style={LogoStyle} source={require('../images/microphone_on.png')} />
+                    <MicNoneIcon/>
                 </Pressable>
             )}
         </>

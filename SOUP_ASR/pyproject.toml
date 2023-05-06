@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "soup-asr"
+version = "0.1.0"
+description = "Service to retrieve user's commands through their speech"
+authors = ["Lahcène Belhadi <lahcene.belhadi@alumni.univ-avignon.fr>"]
+readme = "README.md"
+packages = [{include = "soup_asr"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.2.3"
+speechbrain = "^0.5.14"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+mypy = "^1.1.1"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

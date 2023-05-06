@@ -1,0 +1,29 @@
+import * as React from 'react';
+import {Image, Platform, Pressable} from 'react-native';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+
+export function ListMusic(array ListMusic): JSX.Element {
+
+    const [inPlay, setInPlay] = React.useState(false);
+    const AudioRecorder = new AudioRecorderPlayer();
+
+    const LogoStyle = {
+        height: 100,
+        width: 100,
+        backgroundColor: '#B4B2B2'
+    };
+    
+    return (
+        <>
+            {inPlay ? (
+                <Pressable onPress={stopPlay}>
+                    <Image style={LogoStyle} source={require('../images/play_off.png')} />
+                </Pressable>
+            ) : (
+                <Pressable onPress={startPlay}>
+                    <Image style={LogoStyle} source={require('../images/play_on.png')} />
+                </Pressable>
+            )}
+        </>
+    );
+}

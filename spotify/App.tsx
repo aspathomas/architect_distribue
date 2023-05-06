@@ -43,12 +43,11 @@ export default function App(): JSX.Element {
 
   return (
     <SafeAreaView>
-      <View>
-        <Text> Spotify </Text>
+      <View style={TitreStyle}>
+        <Text style={PoliceStyle}> Spotify </Text>
       </View>
-      <View>
+      <View style={BackgroundStyle}>
         <Ecouter setAudioData={setAudioData}/>
-        
         <Jouer/>
       </View>
     </SafeAreaView>

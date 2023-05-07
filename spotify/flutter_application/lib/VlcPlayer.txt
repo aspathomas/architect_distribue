@@ -1,0 +1,42 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+
+class MyVlcPlayer extends StatefulWidget {
+  @override
+  _MyVlcPlayerState createState() => _MyVlcPlayerState();
+}
+
+class _MyVlcPlayerState extends State<MyVlcPlayer> {
+  late VlcPlayerController _vlcPlayerController;
+
+  @override
+  void initState() {
+    super.initState();
+    final file = File('/musics/Thunderstruck - ACDC.mp3');
+    _vlcPlayerController = VlcPlayerController.file(file);
+  }
+
+  @override
+  void dispose() {
+    _vlcPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('VLC Player'),
+      ),
+      body: Center(
+        child: VlcPlayer(
+          aspectRatio: 16 / 9,
+          controller: _vlcPlayerController,
+          placeholder: Center(child: CircularProgressIndicator()),
+        ),
+      ),
+    );
+  }
+}

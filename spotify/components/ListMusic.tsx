@@ -1,0 +1,64 @@
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Pressable, Image, StyleSheet, Button, TextInput, FlatList } from 'react-native';
+
+export function ListMusic( url: { url: string }): JSX.Element  {
+  const [listMusics, setListMusics] = useState([]);
+  const [nameMusic, setNameMusic] = useState('');
+  const haveMusic = listMusics.length > 0;
+
+  const handleAddMusic = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: nameMusic,
+      }),
+    };
+    fetch(`${url}/get/${nameMusic}`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setListMusics(data);
+      })
+      .catch((error) => {
+        console.error('There was an error!', error);
+      });
+  };
+
+  const styles = StyleSheet.create({
+    input: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      flex: 1
+    },
+  });
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TextInput
+           style={styles.input}
+           onChangeText={(text) => setNameMusic(text)}
+           value={nameMusic}
+         />
+         <Button onPress={handleAddMusic} title="Add" />
+       </View>
+       {haveMusic ? (
+         <FlatList
+           data={listMusics}
+           renderItem={({ item }) => <Text>{item}</Text>}
+         />
+       ) : (
+         <Text>No music found</Text>
+      )}
+    </View>
+  );
+}

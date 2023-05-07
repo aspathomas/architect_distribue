@@ -31,6 +31,9 @@ class Lecteur:
     def stop(self):
         self.player.stop()
 
+lecteur = Lecteur()
+isPlay = False
+
 # Decorator to ensure Ice is initialized before the decorated function is called
 def ice_required(f):
     @wraps(f)
@@ -41,8 +44,36 @@ def ice_required(f):
         return f(twoway, *args, **kwargs)
     return decorated_function
 
-@app.route('/get')
+@app.route('/get/<name>')
 @ice_required
-def hello(twoway):
-    print(twoway.searchMusic("a"))
-    return twoway.searchMusic("a")
+def searchMusic(twoway, name):
+    return twoway.searchMusic(name)
+
+@app.route('/play/<name>')
+@ice_required
+def play(twoway, name):
+    result = twoway.playMusic(name)
+    if result == True:
+        lecteur.play()
+        isPlay = True
+    else:
+        print("Fichier introuvable")
+        
+@app.route('/pause')
+@ice_required
+def pause(twoway):
+    if isPlay is True:
+        lecteur.pause()
+        isPlay = False
+    else:
+        lecteur.play()
+        isPlay = True
+        
+@app.route('/stop')
+@ice_required
+def stop(twoway):
+    result = twoway.stopMusic()
+    if result == True:
+        lecteur.stop()
+    else:
+        print("Fichier introuvable")

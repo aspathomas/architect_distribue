@@ -6,7 +6,7 @@ interface EcouterProps {
     setAudioData: (event: string) => void;
 }
 
-export function Ecouter(props: EcouterProps): JSX.Element {
+export function Ecouter(props: EcouterProps, url: { url: string }): JSX.Element {
     const { setAudioData } = props;
 
     // const options = {
@@ -46,7 +46,6 @@ export function Ecouter(props: EcouterProps): JSX.Element {
             const result = await AudioRecorder.stopRecorder();
             AudioRecorder.removeRecordBackListener();
             setAudioData(result);
-            console.log(result);
             setInRecord(false);
         } catch (error) {
             console.error('Error stopping recording:', error);

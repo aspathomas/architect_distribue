@@ -46,7 +46,7 @@ class MusicI(Demo.Music):
             return False
         
         media = self.vlc.media_new(file)
-        media.add_option("sout=#rtp{mux=ts,ttl=10,port=5000,sdp=rtsp://127.0.0.1:5000/music}")
+        media.add_option("sout=#rtp{mux=ts,ttl=10,port=8080,sdp=rtsp://127.0.0.1:8080/music}")
         media.add_option("--no-sout-all")
         media.add_option("--sout-keep")
         media.get_mrl()

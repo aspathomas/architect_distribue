@@ -17,7 +17,7 @@ class Lecteur:
     def __init__(self):
         self.vlcInstance = vlc.Instance()
         self.player = self.vlcInstance.media_player_new()
-        self.player.set_mrl("rtsp://127.0.0.1:5000/music")
+        self.player.set_mrl("rtsp://127.0.0.1:8080/music")
 
     def pause(self):
         self.player.pause()

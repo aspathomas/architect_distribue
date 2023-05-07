@@ -1,51 +1,50 @@
-import * as React from 'react';
-import {Image, Platform, Pressable} from 'react-native';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Pressable, Image, StyleSheet } from 'react-native';
 
 export function Jouer(): JSX.Element {
 
-    const [inPlay, setInPlay] = React.useState(false);
-    const AudioRecorder = new AudioRecorderPlayer();
+  const [isPlaying, setIsPlaying] = useState(false);
 
-    const LogoStyle = {
-        height: 100,
-        width: 100,
-        backgroundColor: '#B4B2B2'
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+
+    const requestOptions = {
+      method: 'GET'
     };
-    
-    const startPlay = async () => {
-        try {
-            const audioPath = "./musics/Chanson CSS.mp3"; // replace with the actual path to your audio file
-            await AudioRecorder.startPlayer(audioPath);
-            console.log('Playing audio...');
-            setInPlay(true);
-        } catch (error) {
-            console.error('Error playing audio:', error);
+    fetch('http://127.0.0.1:5000/get', requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+  }
 
-    const stopPlay = async () => {
-        try {
-            await AudioRecorder.stopPlayer();
-            console.log('Audio stopped.');
-            setInPlay(false);
-        } catch (error) {
-            console.error('Error stopping audio:', error);
-        }
-    }
+  const styles = StyleSheet.create({
+    logo: {
+      height: 100,
+      width: 100,
+      backgroundColor: '#B4B2B2'
+    },
+  });
 
-
-    return (
-        <>
-            {inPlay ? (
-                <Pressable onPress={stopPlay}>
-                    <Image style={LogoStyle} source={require('../images/play_off.png')} />
-                </Pressable>
-            ) : (
-                <Pressable onPress={startPlay}>
-                    <Image style={LogoStyle} source={require('../images/play_on.png')} />
-                </Pressable>
-            )}
-        </>
-    );
-}
+  return (
+    <View style={{ flex: 1 }}>
+      {isPlaying ? (
+        <Pressable onPress={togglePlay}>
+          <Image style={styles.logo} source={require('../images/stop.png')} />
+        </Pressable>
+      ) : (
+        <Pressable onPress={togglePlay}>
+          <Image style={styles.logo} source={require('../images/play.png')} />
+        </Pressable>
+      )}
+    </View>
+  );
+};

@@ -15,7 +15,7 @@ export function Jouer(): JSX.Element {
     
     const startPlay = async () => {
         try {
-            const audioPath = "/data/user/0/com.spotify/files/audio.mp3"; // replace with the actual path to your audio file
+            const audioPath = "./musics/Chanson CSS.mp3"; // replace with the actual path to your audio file
             await AudioRecorder.startPlayer(audioPath);
             console.log('Playing audio...');
             setInPlay(true);

@@ -1,1 +1,2 @@
 https://www.npmjs.com/package/react-native-audio-recorder-player
+classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"

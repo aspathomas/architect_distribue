@@ -31,7 +31,7 @@ export default function App(): JSX.Element {
   const PoliceStyle = {
     backgroundColor: '#B4B2B2',
     fontSize: 50,
-    fontColor: '#fff'
+    color: '#fff'
   };
   
 

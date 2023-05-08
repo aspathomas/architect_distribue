@@ -55,19 +55,22 @@ def play(twoway, name):
     result = twoway.playMusic(name)
     if result == True:
         lecteur.play()
-        isPlay = True
+        return True
     else:
         print("Fichier introuvable")
+        return False
         
 @app.route('/pause')
 @ice_required
 def pause(twoway):
-    if isPlay is True:
-        lecteur.pause()
-        isPlay = False
-    else:
-        lecteur.play()
-        isPlay = True
+    lecteur.pause()
+    return True
+
+@app.route('/play')
+@ice_required
+def play(twoway):
+    lecteur.play()
+    return True
         
 @app.route('/stop')
 @ice_required
@@ -75,5 +78,7 @@ def stop(twoway):
     result = twoway.stopMusic()
     if result == True:
         lecteur.stop()
+        return True
     else:
         print("Fichier introuvable")
+        return False

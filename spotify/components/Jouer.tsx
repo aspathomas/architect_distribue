@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Pressable, Image, StyleSheet } from 'react-native';
 
-export function Jouer({ url }: { url: string }, { name }: { name: string }): JSX.Element {
+export function Jouer({ url }: { url: string }): JSX.Element {
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isInit, setIsInit] = useState(true);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -11,56 +12,96 @@ export function Jouer({ url }: { url: string }, { name }: { name: string }): JSX
     const requestOptions = {
       method: 'GET'
     };
-    if (isPlaying) {
-      fetch(`${url}/play/${name}`, requestOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+    if (isInit) {
+      fetch(`${url}/play/Thunderstruck - ACDC`, requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          setIsInit(false);
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        });
     } else {
-      fetch(`${url}/pause`, requestOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+      if (!isPlaying) {
+        fetch(`${url}/play`, requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        });
+      } else {
+        fetch(`${url}/pause`, requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+        });
+      }
     }
+  }
+
+  const stop = () => {
+    const requestOptions = {
+      method: 'GET'
+    };
+    fetch(`${url}/stop"`, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      setIsInit(true);
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    });
   }
 
   const styles = StyleSheet.create({
     logo: {
       height: 100,
       width: 100,
-      backgroundColor: '#B4B2B2'
+      backgroundColor: '#fff'
     },
   });
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       {isPlaying ? (
         <Pressable onPress={togglePlay}>
-          <Image style={styles.logo} source={require('../images/stop.png')} />
+          <Image style={styles.logo} source={require('../images/pause.png')} />
         </Pressable>
       ) : (
         <Pressable onPress={togglePlay}>
           <Image style={styles.logo} source={require('../images/play.png')} />
         </Pressable>
       )}
+      <Pressable onPress={stop}>
+        <Image style={styles.logo} source={require('../images/stop.png')} />
+      </Pressable>
     </View>
   );
 };

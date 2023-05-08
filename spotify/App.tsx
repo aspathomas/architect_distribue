@@ -28,7 +28,7 @@ export default function App(): JSX.Element {
     },
   });
   
-  const url =  "https://4306-2001-861-5683-2a60-615b-79eb-4f2c-3373.ngrok-free.app";
+  const url =  "https://4048-2001-861-5683-2a60-4cdf-6d33-14a9-44da.ngrok-free.app";
   const [audio, setAudio] = React.useState("");
 
   const setAudioData = (data: string) => {

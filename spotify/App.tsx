@@ -27,9 +27,9 @@ export default function App(): JSX.Element {
     },
   });
   
-  const url =  "https://b682-2001-861-5683-2a60-1445-d9dc-5c63-9917.ngrok-free.app";
+  const url =  "https://1d13-2001-861-5683-2a60-94c4-305a-74a9-c987.ngrok-free.app";
   const [audio, setAudio] = React.useState("Thunderstruck - ACDC");
-  const [action, setAction] = React.useState("play");
+  const [action, setAction] = React.useState("");
   const [spinner, setSpinner] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [isInit, setIsInit] = React.useState(true);
@@ -50,7 +50,8 @@ export default function App(): JSX.Element {
             isInit= {isInit}
             setIsInit= {setIsInit}
             url={url}
-            audio={audio}/>
+            audio={audio}
+            action={action}/>
           <Text> {audio} </Text>
         </View>
       ) : (

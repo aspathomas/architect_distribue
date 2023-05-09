@@ -5,7 +5,7 @@ import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder
 const AudioRecorder = new AudioRecorderPlayer();
 
 export function Ecouter(props: any): JSX.Element {
-    const { setAudio, setAction } = props;
+    const { setAudio, setAction, url } = props;
     // const options = {
     //     sampleRate: 16000,  // default 44100
     //     channels: 1,        // 1 or 2, default 1
@@ -24,7 +24,24 @@ export function Ecouter(props: any): JSX.Element {
         backgroundColor: '#B4B2B2'
     };
     // const sendRecord = async () => {
-
+    //     console.log("test")
+    //     const requestOptions = {
+    //         method: 'GET'
+    //     };
+    //     console.log("test");
+    //     fetch(`${url}/get/a`, requestOptions)
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         throw new Error(`HTTP error! status: ${response.status}`);
+    //       }
+    //       return response;
+    //     })
+    //     .then(data => {
+    //       console.log(data);
+    //     })
+    //     .catch(error => {
+    //       console.error('There was an error!', error);
+    //     });
     // }
     const startRecord = async () => {
         try {

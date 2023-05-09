@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Pressable, Image, StyleSheet } from 'react-native';
 
 export function Jouer(props: any): JSX.Element {
-  const { url, setSpinner, isPlaying, setIsPlaying, isInit, setIsInit, audio} = props;
+  const { url, setSpinner, isPlaying, setIsPlaying, isInit, setIsInit, audio, action} = props;
 
-
-  const togglePlay = () => {
+  const getPlay = () => {
     setSpinner(true);
-
     const requestOptions = {
       method: 'GET'
     };
@@ -30,45 +28,52 @@ export function Jouer(props: any): JSX.Element {
           setSpinner(false);
         });
     } else {
-      if (!isPlaying) {
-        fetch(`${url}/play`, requestOptions)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response;
-        })
-        .then(data => {
-          console.log(data);
-          setSpinner(false);
-          setIsPlaying(true);
-        })
-        .catch(error => {
-          console.error('There was an error!', error);
-          setSpinner(false);
-        });
-      } else {
-        fetch(`${url}/pause`, requestOptions)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response;
-        })
-        .then(data => {
-          console.log(data);
-          setSpinner(false);
-          setIsPlaying(false);
-        })
-        .catch(error => {
-          console.error('There was an error!', error);
-          setSpinner(false);
-        });
-      }
+      fetch(`${url}/play`, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response;
+      })
+      .then(data => {
+        console.log(data);
+        setSpinner(false);
+        setIsPlaying(true);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+        setSpinner(false);
+      });
     }
   }
 
-  const stop = () => {
+  const getPause = () => {
+    setSpinner(true);
+
+    const requestOptions = {
+      method: 'GET'
+    };
+    if (isPlaying) {
+      fetch(`${url}/pause`, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response;
+      })
+      .then(data => {
+        console.log(data);
+        setSpinner(false);
+        setIsPlaying(false);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+        setSpinner(false);
+      });
+    }
+  }
+
+  const getStop = () => {
     setSpinner(true);
     const requestOptions = {
       method: 'GET'
@@ -90,6 +95,16 @@ export function Jouer(props: any): JSX.Element {
       console.error('There was an error!', error);
       setSpinner(false);
     });
+  }
+
+  if (action) {
+    if (action=="play") {
+      getPlay();
+    } else if(action=="pause") {
+      getPause();
+    } else if(action=="stop") {
+      getStop();
+    }
   }
 
   const styles = StyleSheet.create({
@@ -117,15 +132,15 @@ export function Jouer(props: any): JSX.Element {
   return (
     <View style={styles.container}>
       {isPlaying ? (
-        <Pressable onPress={togglePlay}>
+        <Pressable onPress={getPause}>
           <Image style={styles.logo} source={require('../images/pause.png')} />
         </Pressable>
       ) : (
-        <Pressable onPress={togglePlay}>
+        <Pressable onPress={getPlay}>
           <Image style={styles.logo} source={require('../images/play.png')} />
         </Pressable>
       )}
-      <Pressable onPress={stop}>
+      <Pressable onPress={getStop}>
         <Image style={styles.stop} source={require('../images/stop.png')} />
       </Pressable>
     </View>

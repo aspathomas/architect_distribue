@@ -25,6 +25,11 @@ export default function App(): JSX.Element {
       fontSize: 50,
       color: '#fff',
     },
+    text: {
+      fontSize: 20,
+      marginBottom: 70,
+      color: '#000',
+    },
   });
   
   const url =  "https://1d13-2001-861-5683-2a60-94c4-305a-74a9-c987.ngrok-free.app";
@@ -48,7 +53,6 @@ export default function App(): JSX.Element {
       
       {!spinner ? (
         <View style={styles.background}>
-          <Ecouter setAudio={setAudio} setAction={setAction} url={url}/>
           <Jouer
             setSpinner={setSpinner}
             isPlaying={isPlaying}
@@ -60,7 +64,8 @@ export default function App(): JSX.Element {
             action={action}
             setNewRecord={setNewRecord}
             newRecord={newRecord}/>
-          <Text> {audio} </Text>
+          <Text style={styles.text}> {audio} </Text>
+          <Ecouter setAudio={setAudio} setAction={setAction} url={url}/>
         </View>
       ) : (
         <Text> Chargement ... </Text>

@@ -21,7 +21,7 @@ export function Ecouter(props: any): JSX.Element {
     const LogoStyle = {
         height: 100,
         width: 100,
-        backgroundColor: '#B4B2B2'
+        backgroundColor: '#fff'
     };
     // const sendRecord = async () => {
     //     console.log("test")

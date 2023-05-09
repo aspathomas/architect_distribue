@@ -23,7 +23,9 @@ export function Ecouter(props: EcouterProps): JSX.Element {
     const [audioPath, setAudioPath] = React.useState(0);
     const AudioRecorder = new AudioRecorderPlayer();
 
-    const ASR_URL = "https://1d0e-77-131-70-55.ngrok-free.app";
+    // URLs
+    const ASR_URL = "https://5690-77-131-70-55.ngrok-free.app";  // :5000
+    const NLP_URL = "https://5754-77-131-70-55.ngrok-free.app";  // :5001
 
     const LogoStyle = {
         height: 100,
@@ -60,7 +62,10 @@ export function Ecouter(props: EcouterProps): JSX.Element {
             console.error('Error stopping recording:', error);
         }
 
-        await sendAudioToASR();
+        const tokens = await sendAudioToASR();
+        const action = await sendASRTokensToNLP(tokens);
+        console.log("Action demandée : ", action.action);
+        console.log("Musique demandée : ", action.music);
     }
 
     /**
@@ -84,7 +89,7 @@ export function Ecouter(props: EcouterProps): JSX.Element {
      */
     const sendAudioToASR = async () => {
         console.log("Sending audio .....");
-        RNFS.uploadFiles({
+        const response = await RNFS.uploadFiles({
             toUrl: `${ASR_URL}/transcribe`,
             files: [{
                 name: "audio_file",
@@ -93,18 +98,25 @@ export function Ecouter(props: EcouterProps): JSX.Element {
                 filetype: "audio/wav",
             }],
             method: "POST",
-        }).promise.then((resp) => {
-            if (resp.statusCode == 200) {
-                console.log("UPLOAD SUCCESS");
-                console.log("Resp: ", resp.body);
-            } else {
-                console.error("UPLOAD FAILED");
+        }).promise;
+
+        return response.body;
+    }
+
+    const sendASRTokensToNLP = async (tokens: string) => {
+        console.log("Sending tokens .....");
+        const resp = await axios.post(
+            `${NLP_URL}/retrieve-command`, 
+            { asr_tokens: tokens }, 
+            { 
+              headers: {
+                "Content-Type": "application/json",
+              }
             }
-        })
-        .catch((error) => {
-            console.error("An error occured while uploading audio: ", error);
-        });
-   }
+        );
+
+        return resp.data;
+    }
 
     return (
         <>

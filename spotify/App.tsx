@@ -29,10 +29,16 @@ export default function App(): JSX.Element {
   
   const url =  "https://1d13-2001-861-5683-2a60-94c4-305a-74a9-c987.ngrok-free.app";
   const [audio, setAudio] = React.useState("Thunderstruck - ACDC");
-  const [action, setAction] = React.useState("");
+  const [action, setActionVariable] = React.useState("play");
   const [spinner, setSpinner] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [isInit, setIsInit] = React.useState(true);
+  const [newRecord, setNewRecord] = React.useState(false);
+
+  const setAction = (value: any) => {
+    setActionVariable(value);
+    setNewRecord(true);
+  }
 
   return (
     <SafeAreaView>
@@ -51,7 +57,9 @@ export default function App(): JSX.Element {
             setIsInit= {setIsInit}
             url={url}
             audio={audio}
-            action={action}/>
+            action={action}
+            setNewRecord={setNewRecord}
+            newRecord={newRecord}/>
           <Text> {audio} </Text>
         </View>
       ) : (

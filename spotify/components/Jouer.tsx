@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Pressable, Image, StyleSheet } from 'react-native';
 
 export function Jouer(props: any): JSX.Element {
-  const { url, setSpinner, isPlaying, setIsPlaying, isInit, setIsInit, audio, action} = props;
+  const { url, setSpinner, isPlaying, setIsPlaying, isInit, setIsInit, audio, action, newRecord, setNewRecord} = props;
 
   const getPlay = () => {
     setSpinner(true);
@@ -97,7 +97,7 @@ export function Jouer(props: any): JSX.Element {
     });
   }
 
-  if (action) {
+  if (action && newRecord) {
     if (action=="play") {
       getPlay();
     } else if(action=="pause") {
@@ -105,6 +105,7 @@ export function Jouer(props: any): JSX.Element {
     } else if(action=="stop") {
       getStop();
     }
+    setNewRecord(false)
   }
 
   const styles = StyleSheet.create({

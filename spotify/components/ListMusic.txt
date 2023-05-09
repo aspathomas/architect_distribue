@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Pressable, Image, StyleSheet, Button, TextInput, FlatList } from 'react-native';
 
-export function ListMusic( url: { url: string }): JSX.Element  {
+export function ListMusic( props: any): JSX.Element  {
+  const { url, setSpinner} = props;
   const [listMusics, setListMusics] = useState([]);
   const [nameMusic, setNameMusic] = useState('');
   const haveMusic = listMusics.length > 0;

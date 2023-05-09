@@ -8,7 +8,6 @@ Ice.loadSlice('Music.ice')
 import Demo
 
 app = Flask(__name__)
-
 # Initialize the Ice communicator at the module level
 communicator = Ice.initialize(sys.argv, "config.client")
 twoway = Demo.MusicPrx.checkedCast(communicator.propertyToProxy('Music.Proxy').ice_twoway().ice_secure(True))
@@ -44,41 +43,48 @@ def ice_required(f):
         return f(twoway, *args, **kwargs)
     return decorated_function
 
-@app.route('/get/<name>')
+@app.route('/get/<name>', methods=['GET'])
 @ice_required
 def searchMusic(twoway, name):
     return twoway.searchMusic(name)
 
-@app.route('/play/<name>')
+@app.route('/play/<name>', methods=['GET'] )
 @ice_required
-def play(twoway, name):
+def playMusic(twoway, name):
+    print(name)
     result = twoway.playMusic(name)
     if result == True:
         lecteur.play()
-        return True
+        return name
     else:
         print("Fichier introuvable")
         return False
         
-@app.route('/pause')
+@app.route('/pause', methods=['GET'])
 @ice_required
 def pause(twoway):
     lecteur.pause()
-    return True
+    return "la musique est en pause"
 
-@app.route('/play')
+@app.route('/play', methods=['GET'])
 @ice_required
 def play(twoway):
     lecteur.play()
-    return True
+    return "la musique est en lecture"
         
-@app.route('/stop')
+@app.route('/stop', methods=['GET'])
 @ice_required
 def stop(twoway):
     result = twoway.stopMusic()
     if result == True:
         lecteur.stop()
-        return True
+        return "La chanson est stopper"
     else:
         print("Fichier introuvable")
         return False
+    
+@app.route('/exit', methods=['GET'])
+@ice_required
+def exit(twoway):
+    communicator.destroy()
+    return True

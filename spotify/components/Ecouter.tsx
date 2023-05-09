@@ -2,13 +2,8 @@ import * as React from 'react';
 import {Image, Platform, Pressable} from 'react-native';
 import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder-player';
 
-interface EcouterProps {
-    setAudioData: (event: string) => void;
-}
-
-export function Ecouter(props: EcouterProps, url: { url: string }): JSX.Element {
-    const { setAudioData } = props;
-
+export function Ecouter(props: any): JSX.Element {
+    const { setAudioData, url} = props;
     // const options = {
     //     sampleRate: 16000,  // default 44100
     //     channels: 1,        // 1 or 2, default 1

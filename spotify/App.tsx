@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { Ecouter } from './components/Ecouter';
 import { Jouer } from './components/Jouer';
-import { ListMusic } from './components/ListMusic';
 
 export default function App(): JSX.Element {
   const styles = StyleSheet.create({
@@ -30,6 +29,7 @@ export default function App(): JSX.Element {
   
   const url =  "https://b682-2001-861-5683-2a60-1445-d9dc-5c63-9917.ngrok-free.app";
   const [audio, setAudio] = React.useState("Thunderstruck - ACDC");
+  const [action, setAction] = React.useState("play");
   const [spinner, setSpinner] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [isInit, setIsInit] = React.useState(true);
@@ -42,7 +42,7 @@ export default function App(): JSX.Element {
       
       {!spinner ? (
         <View style={styles.background}>
-          <Ecouter setAudio={setAudio} url={url}/>
+          <Ecouter setAudio={setAudio} setAction={setAction} url={url}/>
           <Jouer
             setSpinner={setSpinner}
             isPlaying={isPlaying}

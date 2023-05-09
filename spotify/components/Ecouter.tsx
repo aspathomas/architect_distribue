@@ -2,8 +2,10 @@ import * as React from 'react';
 import {Image, Platform, Pressable} from 'react-native';
 import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder-player';
 
+const AudioRecorder = new AudioRecorderPlayer();
+
 export function Ecouter(props: any): JSX.Element {
-    const { setAudioData, url} = props;
+    const { setAudio, setAction } = props;
     // const options = {
     //     sampleRate: 16000,  // default 44100
     //     channels: 1,        // 1 or 2, default 1
@@ -12,16 +14,18 @@ export function Ecouter(props: any): JSX.Element {
     //     wavFile: 'test.wav' // default 'audio.wav'
     //   };
     
-    const [inRecord, setInRecord] = React.useState(false);
     const [audioPath, setAudioPath] = React.useState(0);
-    const AudioRecorder = new AudioRecorderPlayer();
+    const [audioData, setAudioData] = React.useState("");
+    const [inRecord, setInRecord] = React.useState(false);
 
     const LogoStyle = {
         height: 100,
         width: 100,
         backgroundColor: '#B4B2B2'
     };
-    
+    // const sendRecord = async () => {
+
+    // }
     const startRecord = async () => {
         try {
             const audioPath = "/data/user/0/com.spotify/files/audio.mp3";

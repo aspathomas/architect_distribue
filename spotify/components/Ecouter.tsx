@@ -4,13 +4,10 @@ import AudioRecorderPlayer, { RecordBackType } from 'react-native-audio-recorder
 import RNFS from 'react-native-fs';
 import axios from 'axios';
 
-interface EcouterProps {
-    setAudioData: (event: string) => void;
-}
+const AudioRecorder = new AudioRecorderPlayer();
 
-export function Ecouter(props: EcouterProps): JSX.Element {
-    const { setAudioData } = props;
-
+export function Ecouter(props: any): JSX.Element {
+    const { setAudio, setAction, url } = props;
     // const options = {
     //     sampleRate: 16000,  // default 44100
     //     channels: 1,        // 1 or 2, default 1
@@ -19,9 +16,9 @@ export function Ecouter(props: EcouterProps): JSX.Element {
     //     wavFile: 'test.wav' // default 'audio.wav'
     //   };
     
-    const [inRecord, setInRecord] = React.useState(false);
     const [audioPath, setAudioPath] = React.useState(0);
-    const AudioRecorder = new AudioRecorderPlayer();
+    const [audioData, setAudioData] = React.useState("");
+    const [inRecord, setInRecord] = React.useState(false);
 
     // URLs
     const ASR_URL = "https://5690-77-131-70-55.ngrok-free.app";  // :5000
@@ -36,6 +33,26 @@ export function Ecouter(props: EcouterProps): JSX.Element {
     // retrieves audio file
     const recordedFilePath = `${RNFS.DocumentDirectoryPath}/audio.wav`;
     
+    // const sendRecord = async () => {
+    //     console.log("test")
+    //     const requestOptions = {
+    //         method: 'GET'
+    //     };
+    //     console.log("test");
+    //     fetch(`${url}/get/a`, requestOptions)
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         throw new Error(`HTTP error! status: ${response.status}`);
+    //       }
+    //       return response;
+    //     })
+    //     .then(data => {
+    //       console.log(data);
+    //     })
+    //     .catch(error => {
+    //       console.error('There was an error!', error);
+    //     });
+    // }
     const startRecord = async () => {
         try {
             const result = await AudioRecorder.startRecorder(recordedFilePath);
@@ -56,7 +73,6 @@ export function Ecouter(props: EcouterProps): JSX.Element {
             AudioRecorder.removeRecordBackListener();
             console.log("setting audio data");
             setAudioData(result);
-            console.log(result);
             setInRecord(false);
         } catch (error) {
             console.error('Error stopping recording:', error);

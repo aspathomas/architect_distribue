@@ -1,52 +1,149 @@
-import * as React from 'react';
-import {Image, Platform, Pressable} from 'react-native';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import RNFS from 'react-native-fs';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Pressable, Image, StyleSheet } from 'react-native';
 
-export function Jouer(): JSX.Element {
+export function Jouer(props: any): JSX.Element {
+  const { url, setSpinner, isPlaying, setIsPlaying, isInit, setIsInit, audio, action, newRecord, setNewRecord} = props;
 
-    const [inPlay, setInPlay] = React.useState(false);
-    const AudioRecorder = new AudioRecorderPlayer();
-
-    const LogoStyle = {
-        height: 100,
-        width: 100,
-        backgroundColor: '#B4B2B2'
+  const getPlay = () => {
+    setSpinner(true);
+    const requestOptions = {
+      method: 'GET'
     };
-    
-    const startPlay = async () => {
-        try {
-            const audioPath = "/data/user/0/com.spotify/files/audio.mp3"; // replace with the actual path to your audio file
-            await AudioRecorder.startPlayer(audioPath);
-            console.log('Playing audio...');
-            setInPlay(true);
-        } catch (error) {
-            console.error('Error playing audio:', error);
+    if (isInit) {
+      fetch(`${url}/play/${audio}`, requestOptions)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response;
+        })
+        .then(data => {
+          console.log(data);
+          setIsInit(false);
+          setSpinner(false);
+          setIsPlaying(true);
+        })
+        .catch(error => {
+          console.error('There was an error!', error);
+          setSpinner(false);
+        });
+    } else {
+      fetch(`${url}/play`, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-    };
-
-    const stopPlay = async () => {
-        try {
-            await AudioRecorder.stopPlayer();
-            console.log('Audio stopped.');
-            setInPlay(false);
-        } catch (error) {
-            console.error('Error stopping audio:', error);
-        }
+        return response;
+      })
+      .then(data => {
+        console.log(data);
+        setSpinner(false);
+        setIsPlaying(true);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+        setSpinner(false);
+      });
     }
+  }
 
+  const getPause = () => {
+    setSpinner(true);
 
-    return (
-        <>
-            {inPlay ? (
-                <Pressable onPress={stopPlay}>
-                    <Image style={LogoStyle} source={require('../images/play_off.png')} />
-                </Pressable>
-            ) : (
-                <Pressable onPress={startPlay}>
-                    <Image style={LogoStyle} source={require('../images/play_on.png')} />
-                </Pressable>
-            )}
-        </>
-    );
-}
+    const requestOptions = {
+      method: 'GET'
+    };
+    if (isPlaying) {
+      fetch(`${url}/pause`, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response;
+      })
+      .then(data => {
+        console.log(data);
+        setSpinner(false);
+        setIsPlaying(false);
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+        setSpinner(false);
+      });
+    }
+  }
+
+  const getStop = () => {
+    setSpinner(true);
+    const requestOptions = {
+      method: 'GET'
+    };
+    fetch(`${url}/stop`, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response;
+    })
+    .then(data => {
+      console.log(data);
+      setIsInit(true);
+      setSpinner(false);
+      setIsPlaying(false);
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+      setSpinner(false);
+    });
+  }
+
+  if (action && newRecord) {
+    if (action=="play") {
+      getPlay();
+    } else if(action=="pause") {
+      getPause();
+    } else if(action=="stop") {
+      getStop();
+    }
+    setNewRecord(false)
+  }
+
+  const styles = StyleSheet.create({
+    logo: {
+      height: 100,
+      width: 100,
+      backgroundColor: '#fff',
+      justifyContent:'space-evenly',
+      flexDirection:'row'
+    },
+    stop: {
+      height: 100,
+      width: 100,
+      backgroundColor: '#fff',
+      justifyContent:'space-evenly',
+      marginVertical:10,
+      marginHorizontal:10
+    },
+    container: {
+      flexDirection:'row',
+      alignItems:'center'
+    }
+  });
+
+  return (
+    <View style={styles.container}>
+      {isPlaying ? (
+        <Pressable onPress={getPause}>
+          <Image style={styles.logo} source={require('../images/pause.png')} />
+        </Pressable>
+      ) : (
+        <Pressable onPress={getPlay}>
+          <Image style={styles.logo} source={require('../images/play.png')} />
+        </Pressable>
+      )}
+      <Pressable onPress={getStop}>
+        <Image style={styles.stop} source={require('../images/stop.png')} />
+      </Pressable>
+    </View>
+  );
+};

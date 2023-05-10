@@ -21,8 +21,8 @@ export function Ecouter(props: any): JSX.Element {
     const [inRecord, setInRecord] = React.useState(false);
 
     // URLs
-    const ASR_URL = "https://5690-77-131-70-55.ngrok-free.app";  // :5000
-    const NLP_URL = "https://5754-77-131-70-55.ngrok-free.app";  // :5001
+    const ASR_URL = "http://10.0.2.2:5000";  // :5000
+    const NLP_URL = "http://10.0.2.2:5001";  // :5001
 
     const LogoStyle = {
         height: 100,
@@ -79,7 +79,7 @@ export function Ecouter(props: any): JSX.Element {
         }
 
         const tokens = await sendAudioToASR();
-        const action = await sendASRTokensToNLP(tokens);
+        const action = await sendASRTokensToNLP("bonjour");
         console.log("Action demandée : ", action.action);
         console.log("Musique demandée : ", action.music);
     }
@@ -105,18 +105,22 @@ export function Ecouter(props: any): JSX.Element {
      */
     const sendAudioToASR = async () => {
         console.log("Sending audio .....");
-        const response = await RNFS.uploadFiles({
-            toUrl: `${ASR_URL}/transcribe`,
-            files: [{
-                name: "audio_file",
-                filepath: "/sdcard/audio_test.wav", // TODO: Envoyer l'audio enregistré par l'app
-                filename: "audio_test.wav",
-                filetype: "audio/wav",
-            }],
-            method: "POST",
-        }).promise;
+        try {
+            const response = await RNFS.uploadFiles({
+                toUrl: `${ASR_URL}/transcribe`,
+                files: [{
+                    name: "audio_file",
+                    filepath: "/sdcard/audio_test.wav", // TODO: Envoyer l'audio enregistré par l'app
+                    filename: "audio_test.wav",
+                    filetype: "audio/wav",
+                }],
+                method: "POST",
+            }).promise;
+        } catch (error) {
+            console.error(error);
+        }
 
-        return response.body;
+        // return response.body;
     }
 
     const sendASRTokensToNLP = async (tokens: string) => {

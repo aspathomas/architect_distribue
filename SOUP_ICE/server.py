@@ -16,28 +16,6 @@ import Demo
 
 
 class MusicI(Demo.Music):
-
-    def __init__(self) :
-        self.vlc = vlc.Instance()
-        self.player = self.vlc.media_player_new()
-        self.index = 0
-        self.partMusic = {}
-
-    def sendMusicPart(self, id, part, current):
-        if id not in self.partMusic: self.partMusic[id] = b""
-        self.partMusic[id] += part
-        return 0
-
-    def uploadMusic(self, id, music, current):
-        file = open("music_server/" + music, "wb")
-        file.write(self.partMusic[id])
-        file.close()
-        return 0
-
-    def getNewIndex(self, current):
-        index = self.index
-        self.index += 1
-        return index
     
     def playMusic(self, musicName, current):
         file = "music_server/" + musicName + ".mp3"
@@ -71,17 +49,6 @@ class MusicI(Demo.Music):
                 musicList.append(fileName)
         os.chdir(source)
         return musicList
-        
-
-    def delete(self, musicName, current):
-        file = "music_server/" + musicName + ".mp3"
-        print(file)
-        if (os.path.exists(file)):
-            os.remove(file)
-            return True
-        return False
-    def shutdown(self, current):
-        current.adapter.getCommunicator().shutdown()
 
 
 #

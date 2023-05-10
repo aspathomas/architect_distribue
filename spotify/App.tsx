@@ -33,7 +33,7 @@ export default function App(): JSX.Element {
   });
   
   const url =  "http://10.0.2.2:5000";
-  const [audio, setAudio] = React.useState("Thunderstruck - ACDC");
+  const [audio, setAudio] = React.useState("Charles Aznavour - Emmenez-moi");
   const [action, setActionVariable] = React.useState("play");
   const [spinner, setSpinner] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);

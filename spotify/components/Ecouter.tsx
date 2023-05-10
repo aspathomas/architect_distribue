@@ -119,12 +119,13 @@ export function Ecouter(props: any): JSX.Element {
                 toUrl: `${ASR_URL}/transcribe`,
                 files: [{
                     name: "audio_file",
-                    filepath: path, // TODO: Envoyer l'audio enregistré par l'app
-                    filename: "audio.wav",
+                    filepath: "/sdcard/audio_test.wav", // TODO: Envoyer l'audio enregistré par l'app
+                    filename: "audio_test.wav",
                     filetype: "audio/wav",
                 }],
                 method: "POST",
             }).promise;
+            console.log(response);
         } catch (error) {
             console.error(error);
         }

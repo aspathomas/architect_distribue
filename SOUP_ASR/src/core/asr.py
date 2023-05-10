@@ -5,6 +5,7 @@
 # Authors: Lahcène Belhadi <lahcene.belhadi@alumni.univ-avignon.fr>
 
 from speechbrain.pretrained import EncoderDecoderASR
+from unidecode import unidecode
 
 
 class ASR:
@@ -25,4 +26,4 @@ class ASR:
             audio -- the audio file to transcribe
         """
         transcription = self.asr.transcribe_file(audio)
-        return transcription.lower()
+        return unidecode(transcription.lower())

@@ -10,7 +10,7 @@ from core.api import api
 
 def main() -> None:
     """SOUP's ASR entry point"""
-    api.run()
+    api.run(port=5002)
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ from core.api import api
 
 def main() -> None:
     """SOUP's NLP entry point"""
-    api.run()
+    api.run(port=5001)
 
 
 if __name__ == "__main__":

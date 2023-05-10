@@ -22,10 +22,15 @@ def root() -> str:
 @api.post("/transcribe")
 def transcribe() -> str:
     """Enables user to pass an audio file and get the text from their speech"""
+    print(request.files)
     audio_file = request.files.get("audio_file")
 
     if audio_file is None:
-        return "No file provided!"
+        msg = "No file provided!"
+        print(msg)
+        return msg 
+
+    print(f"file name: audio_file.name")
 
     # save to tmp
     tmp_path = os.path.join("./res/tmp", "tmpaudio.wav")

@@ -32,7 +32,7 @@ export default function App(): JSX.Element {
     },
   });
   
-  const url =  "https://1d13-2001-861-5683-2a60-94c4-305a-74a9-c987.ngrok-free.app";
+  const url =  "http://10.0.2.2:5000";
   const [audio, setAudio] = React.useState("Thunderstruck - ACDC");
   const [action, setActionVariable] = React.useState("play");
   const [spinner, setSpinner] = React.useState(false);
